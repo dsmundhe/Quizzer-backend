@@ -1,24 +1,19 @@
-const mongoose = require("mongoose");
-
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
+const mongoose = require('mongoose');
+const URI =process.env.MONGODB_URI ||  "mongodb://127.0.0.1:27017/Quizzer-App";
 
 const dbConnection = async () => {
-  if (cached.conn) return cached.conn;
-
-  if (!cached.promise) {
-    const URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/Quizzer-App";
-    cached.promise = mongoose.connect(URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }).then((mongoose) => mongoose);
-  }
-
-  cached.conn = await cached.promise;
-  return cached.conn;
+    try {
+        await mongoose.connect(URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log("MongoDB connected successfully");
+    } catch (error) {
+        console.error("MongoDB connection error:", error.message);
+        throw error; // propagate error
+    }
 };
 
-module.exports = { dbConnection };
+
+ 
+module.exports={dbConnection}

@@ -17,7 +17,7 @@ dbConnection()
 
 // Routes
 const userRouter = require("./routes/userRoutes");
-const quizRouter = require("./routes/quizRoutes");
+const quizRouter = require("../routes/quizRoutes");
 
 app.use("/user", userRouter);
 app.use("/quiz", quizRouter);
