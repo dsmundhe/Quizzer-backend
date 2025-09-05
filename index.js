@@ -1,38 +1,32 @@
+// api/index.js
 const express = require("express");
+const serverless = require("serverless-http");
 require("dotenv").config();
-const { dbConnection } = require("./db/dbConnection");
-const cors=require('cors');
+const { dbConnection } = require("../db/dbConnection");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin: "*", // frontend URL
-  credentials: true,               // if you use cookies
+  origin: "*",
+  credentials: true,
 }));
 
-const PORT = process.env.PORT || 4000;
+// Connect to MongoDB
+dbConnection().then(() => console.log("MongoDB connected successfully"))
+              .catch((err) => console.error(err));
 
 // Routes
-const userRouter = require("./routes/userRoutes");
-app.use("/user", userRouter); // Corrected route prefix
+const userRouter = require("../routes/userRoutes");
+const quizRouter = require("../routes/quizRoutes");
 
+app.use("/user", userRouter);
+app.use("/quiz", quizRouter);
 
-const quizRouter = require('./routes/quizRoutes');
-app.use('/quiz', quizRouter);
-
-
-// Connect to MongoDB
-dbConnection()
-  .then(() => console.log("MongoDB connected successfully"))
-  .catch((err) => console.error("MongoDB connection error:", err.message));
-
-// Root route
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server started on http://localhost:${PORT}`);
-});
+// Wrap Express app for serverless
+module.exports.handler = serverless(app);
