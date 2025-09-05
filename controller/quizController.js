@@ -42,15 +42,21 @@ const addQuiz = async (req, res) => {
 const getQuizzes = async (req, res) => {
     const { email } = req.query;
 
+    if (!email) {
+        return res.status(400).json({ msg: "Email is required to fetch quizzes" });
+    }
+
     try {
-        let filter = {};
-        if (email) filter.email = email;
-        const quizzes = await QuizApis.find(filter);
+        // Ensure exact match, trimmed and lowercase for consistency
+        const quizzes = await QuizApis.find({
+            email: email.trim().toLowerCase()
+        });
         return res.status(200).json({ quizzes });
     } catch (error) {
-        return res.status(500).json({ msg: 'Server error', error: error.message });
+        return res.status(500).json({ msg: "Server error", error: error.message });
     }
 };
+
 
 // ================= UPDATE QUIZ =================
 const updateQuiz = async (req, res) => {
