@@ -7,9 +7,11 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-  origin: "*", // frontend URL
-  credentials: true,               // if you use cookies
+  origin: ["http://localhost:5173", "https://quizzer-one-eta.vercel.app"], 
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
+
 
 const PORT = process.env.PORT || 4000;
 
