@@ -1,16 +1,12 @@
 const express = require("express");
 require("dotenv").config();
 const { dbConnection } = require("./db/dbConnection");
-const cors=require('cors');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
 
-app.use(cors({
-  origin: ["http://localhost:5173", "https://quizzer-one-eta.vercel.app"], 
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+app.use(cors());
 
 
 const PORT = process.env.PORT || 4000;
