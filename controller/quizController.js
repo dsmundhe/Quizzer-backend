@@ -96,4 +96,6 @@ const deleteQuiz = async (req, res) => {
     }
 };
 
+
+
 module.exports = { addQuiz, getQuizzes, updateQuiz, deleteQuiz };

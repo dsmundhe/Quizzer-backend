@@ -22,6 +22,10 @@ const quizRouter = require('./routes/quizRoutes');
 app.use('/quiz', quizRouter);
 
 
+const storeResult = require('./routes/storeResult');
+app.use('/score', storeResult);
+
+
 // Connect to MongoDB
 dbConnection()
   .then(() => console.log("MongoDB connected successfully"))
